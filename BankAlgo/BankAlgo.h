@@ -44,11 +44,20 @@ public:
 		TRANSFER_RESULT_INVALID_ACCOUNT
 	} TRANSFER_RESULT;
 
+	typedef enum
+	{
+		WITHDRAWAL_RESULT_OK,
+		WITHDRAWAL_RESULT_INSUFFICIENT_FUNDS,
+		WITHDRAWAL_RESULT_INVALID_ACCOUNT
+	} WITHDRAWAL_RESULT;
+
+
 	Bank(IAccountStorage *storage);
 	bool AddAccount(std::string id);
 	Account *GetAccount(std::string id);
 
 	void Deposit(std::string kontonummerTo, float belopp);
+	WITHDRAWAL_RESULT Withdrawal(std::string kontonummerFrom, float belopp);
 	TRANSFER_RESULT Transfer(std::string kontonummerFrom, std::string kontonummerTo, float belopp);
 private:
 	IAccountStorage * accountStorage;

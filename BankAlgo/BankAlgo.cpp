@@ -55,6 +55,15 @@ void Bank::Deposit(std::string kontonummerTo, float belopp)
 	accTo->SetBalance(accTo->GetBalance() + belopp);
 }
 
+Bank::WITHDRAWAL_RESULT Bank::Withdrawal(std::string kontonummerFrom, float belopp)
+{
+	Account *accFrom = accountStorage->GetAccount(kontonummerFrom);
+	if (accFrom == nullptr) return Bank::WITHDRAWAL_RESULT_INVALID_ACCOUNT;
+	if (belopp > accFrom->GetBalance()) return Bank::WITHDRAWAL_RESULT_INSUFFICIENT_FUNDS;
+	accFrom->SetBalance(accFrom->GetBalance() - belopp);
+}
+
+
 Bank::TRANSFER_RESULT Bank::Transfer(std::string kontonummerFrom, std::string kontonummerTo, float belopp)
 {
 	Account *accFrom = accountStorage->GetAccount(kontonummerFrom);
