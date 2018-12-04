@@ -47,3 +47,12 @@ TEST(VectorAccountStorageTests, AccountsWithIdLengthLessThan11ShouldBeStored) {
 	Account *acc = storage.GetAccount("1234567890");
 	EXPECT_EQ("1234567890", acc->GetId());
 }
+
+
+TEST(VectorAccountStorageTests, AccountsWithIdLength8ShouldBeStored) {
+	VectorAccountStorage storage;
+	storage.AddAccount("12345678");
+
+	Account *acc = storage.GetAccount("12345678");
+	EXPECT_EQ("12345678", acc->GetId());
+}

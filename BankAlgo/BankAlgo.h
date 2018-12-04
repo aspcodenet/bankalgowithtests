@@ -8,6 +8,8 @@ class Account
 public:
 	Account(std::string id, float balance = 0);
 	std::string GetId();
+	float GetBalance();
+	void SetBalance(float balance);
 private:
 	std::string id;
 	float balance;
@@ -35,9 +37,19 @@ private:
 class Bank
 {
 public:
+	typedef enum
+	{
+		TRANSFER_RESULT_OK,
+		TRANSFER_RESULT_INSUFFICIENT_FUNDS,
+		TRANSFER_RESULT_INVALID_ACCOUNT
+	} TRANSFER_RESULT;
+
 	Bank(IAccountStorage *storage);
 	bool AddAccount(std::string id);
 	Account *GetAccount(std::string id);
+
+	void Deposit(std::string kontonummerTo, float belopp);
+	TRANSFER_RESULT Transfer(std::string kontonummerFrom, std::string kontonummerTo, float belopp);
 private:
 	IAccountStorage * accountStorage;
 };

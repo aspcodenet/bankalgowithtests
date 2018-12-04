@@ -11,6 +11,16 @@ std::string Account::GetId()
 	return this->id;
 }
 
+float Account::GetBalance()
+{
+	return balance;
+}
+void Account::SetBalance(float balance)
+{
+	this->balance = balance;
+}
+
+
 VectorAccountStorage::~VectorAccountStorage()
 {
 	for (int i = 0; i < accounts.size(); i++)
@@ -38,6 +48,27 @@ Bank::Bank(IAccountStorage *storage)
 {
 	accountStorage = storage;
 }
+
+void Bank::Deposit(std::string kontonummerTo, float belopp)
+{
+	Account *accTo = accountStorage->GetAccount(kontonummerTo);
+	accTo->SetBalance(accTo->GetBalance() + belopp);
+}
+
+Bank::TRANSFER_RESULT Bank::Transfer(std::string kontonummerFrom, std::string kontonummerTo, float belopp)
+{
+	Account *accFrom = accountStorage->GetAccount(kontonummerFrom);
+	Account *accTo = accountStorage->GetAccount(kontonummerTo);
+
+	if (accFrom == nullptr || accTo == nullptr) return TRANSFER_RESULT_INVALID_ACCOUNT;
+	if (accFrom->GetBalance() < belopp) return TRANSFER_RESULT_INSUFFICIENT_FUNDS;
+
+	accFrom->SetBalance(accFrom->GetBalance() - belopp);
+	accTo->SetBalance(accTo->GetBalance() + belopp);
+
+	return TRANSFER_RESULT_OK;
+}
+
 
 bool Bank::AddAccount(std::string id)
 {
